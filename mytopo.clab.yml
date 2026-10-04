@@ -1,5 +1,4 @@
-# topology documentation: http://containerlab.dev/lab-examples/srl-ceos/
-name: sado-srl-topology
+name: mytopo
 
 topology:
   kinds:
