@@ -1,0 +1,40 @@
+enter candidate
+
+# 1. Interfaces & System Loopback
+set / interface system0 subinterface 0 ipv4 admin-state enable
+set / interface system0 subinterface 0 ipv4 address 3.3.3.3/32
+
+set / interface ethernet-1/1 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/1 subinterface 0 ipv4 address 10.0.23.3/24
+
+set / interface ethernet-1/2 subinterface 0 ipv4 admin-state enable
+set / interface ethernet-1/2 subinterface 0 ipv4 address 10.0.34.3/24
+
+# 2. Attach Interfaces to Default Network Instance
+set / network-instance base interface system0.0
+set / network-instance base interface ethernet-1/1.0
+set / network-instance base interface ethernet-1/2.0
+
+# 3. Routing Policy
+set / routing-policy policy export-all default-action policy-result accept
+
+# 4. BGP Protocol Configuration
+set / network-instance base protocols bgp admin-state enable
+set / network-instance base protocols bgp autonomous-system 65003
+set / network-instance base protocols bgp router-id 3.3.3.3
+set / network-instance base protocols bgp afi-safi ipv4-unicast admin-state enable
+
+set / network-instance base protocols bgp group ebgp-peers admin-state enable
+set / network-instance base protocols bgp group ebgp-peers export-policy [ export-all ]
+
+# Neighbor to srl-B
+set / network-instance base protocols bgp neighbor 10.0.23.2 admin-state enable
+set / network-instance base protocols bgp neighbor 10.0.23.2 peer-group ebgp-peers
+set / network-instance base protocols bgp neighbor 10.0.23.2 peer-as 65002
+
+# Neighbor to srl-D
+set / network-instance base protocols bgp neighbor 10.0.34.4 admin-state enable
+set / network-instance base protocols bgp neighbor 10.0.34.4 peer-group ebgp-peers
+set / network-instance base protocols bgp neighbor 10.0.34.4 peer-as 65004
+
+commit now
