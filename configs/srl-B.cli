@@ -17,6 +17,7 @@ set / network-instance base interface ethernet-1/2.0
 
 # 3. Routing Policy
 set / routing-policy policy export-all default-action policy-result accept
+set / routing-policy policy import-all default-action policy-result accept
 
 # 4. BGP Protocol Configuration
 set / network-instance base protocols bgp admin-state enable
@@ -26,6 +27,7 @@ set / network-instance base protocols bgp afi-safi ipv4-unicast admin-state enab
 
 set / network-instance base protocols bgp group ebgp-peers admin-state enable
 set / network-instance base protocols bgp group ebgp-peers export-policy [ export-all ]
+set / network-instance base protocols bgp group ebgp-peers import-policy [ import-all ]
 
 # Neighbor to srl-A
 set / network-instance base protocols bgp neighbor 10.0.12.1 admin-state enable
