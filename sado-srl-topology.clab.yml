@@ -1,0 +1,26 @@
+# topology documentation: http://containerlab.dev/lab-examples/srl-ceos/
+name: sado-srl-topology
+
+topology:
+  kinds:
+    nokia_srlinux:
+      image: ghcr.io/nokia/srlinux:latest
+  nodes:
+    srl-A:
+      kind: nokia_srlinux
+      startup-config: configs/srl-A.cli
+    srl-B:
+      kind: nokia_srlinux
+      startup-config: configs/srl-B.cli
+    srl-C:
+      kind: nokia_srlinux
+      startup-config: configs/srl-C.cli
+    srl-D:
+      kind: nokia_srlinux
+      startup-config: configs/srl-D.cli
+
+  links:
+    - endpoints: ["srl-A:e1-1", "srl-B:e1-1"]
+    - endpoints: ["srl-B:e1-2", "srl-C:e1-1"]
+    - endpoints: ["srl-C:e1-2", "srl-D:e1-1"]
+    - endpoints: ["srl-D:e1-2", "srl-A:e1-2"]
